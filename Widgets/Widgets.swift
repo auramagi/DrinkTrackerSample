@@ -68,7 +68,16 @@ struct WidgetsEntryView : View {
             }
             .padding()
         }
-        .background(Color(UIColor.secondarySystemGroupedBackground))
+        .background(backgroundColor)
+    }
+    
+    private var backgroundColor: some View {
+        Color(UIColor.secondarySystemGroupedBackground)
+            .overlay(
+                Color.accentColor
+                    .opacity(0.10)
+                    .blendMode(.hardLight)
+            )
     }
 }
 
@@ -80,17 +89,26 @@ struct CellDetailView: View {
             Text("Water intake")
                 .font(.system(.subheadline, design: .rounded))
         
-            // adding whitespace to line end prevent agrressive truncating (beta 1 bug)
-            Text("\(Text(timestamp, style: .relative))     ")
+            // adding whitespace to line end prevent agressive truncating (beta 1 bug)
+            Text("\(Text(timestamp.addingTimeInterval(-559), style: .relative))                      ")
                 .font(.system(.headline, design: .rounded))
             
-            Text(timestamp, style: .time)
+            Text(timestampString)
                 .font(.system(.caption, design: .rounded))
                 .bold()
                 .imageScale(.small)
                 .foregroundColor(.secondary)
                 .padding(.bottom, 2)
         }
+    }
+    
+    var timestampString: String {
+        let df = DateFormatter()
+        df.dateStyle = .short
+        df.timeStyle = .short
+        df.doesRelativeDateFormatting = true
+        
+        return df.string(from: timestamp)
     }
 }
 
@@ -113,11 +131,13 @@ struct WidgetsEntryView_Previews: PreviewProvider {
             WidgetsEntryView(entry: .init(date: Date()))
                 .previewContext(WidgetPreviewContext(family: .systemSmall))
                 .environment(\.colorScheme, .light)
+                .environment(\.locale, Locale(identifier: "ja"))
             
             
             WidgetsEntryView(entry: .init(date: Date()))
                 .previewContext(WidgetPreviewContext(family: .systemSmall))
                 .environment(\.colorScheme, .dark)
+                .environment(\.locale, Locale(identifier: "en"))
         }
     }
 }
