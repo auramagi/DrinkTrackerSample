@@ -11,7 +11,36 @@
 		A3F7587D24AE3C2400B4ABD8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F7587C24AE3C2400B4ABD8 /* ContentView.swift */; };
 		A3F7587F24AE3C2600B4ABD8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A3F7587E24AE3C2600B4ABD8 /* Assets.xcassets */; };
 		A3F7588224AE3C2600B4ABD8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A3F7588124AE3C2600B4ABD8 /* Preview Assets.xcassets */; };
+		A3F7589024AE3DE400B4ABD8 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3F7588F24AE3DE400B4ABD8 /* WidgetKit.framework */; };
+		A3F7589224AE3DE400B4ABD8 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3F7589124AE3DE400B4ABD8 /* SwiftUI.framework */; };
+		A3F7589524AE3DE400B4ABD8 /* Widgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F7589424AE3DE400B4ABD8 /* Widgets.swift */; };
+		A3F7589724AE3DE600B4ABD8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A3F7589624AE3DE600B4ABD8 /* Assets.xcassets */; };
+		A3F7589B24AE3DE600B4ABD8 /* WidgetsExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A3F7588D24AE3DE400B4ABD8 /* WidgetsExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A3F7589924AE3DE600B4ABD8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A3F7586F24AE3C2400B4ABD8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A3F7588C24AE3DE400B4ABD8;
+			remoteInfo = WidgetsExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A3F7589F24AE3DE600B4ABD8 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				A3F7589B24AE3DE600B4ABD8 /* WidgetsExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		A3F7587724AE3C2400B4ABD8 /* DrinkTrackerSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DrinkTrackerSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -20,6 +49,12 @@
 		A3F7587E24AE3C2600B4ABD8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A3F7588124AE3C2600B4ABD8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		A3F7588324AE3C2600B4ABD8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A3F7588D24AE3DE400B4ABD8 /* WidgetsExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = WidgetsExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		A3F7588F24AE3DE400B4ABD8 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		A3F7589124AE3DE400B4ABD8 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		A3F7589424AE3DE400B4ABD8 /* Widgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Widgets.swift; sourceTree = "<group>"; };
+		A3F7589624AE3DE600B4ABD8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A3F7589824AE3DE600B4ABD8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -30,6 +65,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A3F7588A24AE3DE400B4ABD8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A3F7589224AE3DE400B4ABD8 /* SwiftUI.framework in Frameworks */,
+				A3F7589024AE3DE400B4ABD8 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -37,6 +81,8 @@
 			isa = PBXGroup;
 			children = (
 				A3F7587924AE3C2400B4ABD8 /* DrinkTrackerSample */,
+				A3F7589324AE3DE400B4ABD8 /* Widgets */,
+				A3F7588E24AE3DE400B4ABD8 /* Frameworks */,
 				A3F7587824AE3C2400B4ABD8 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -45,6 +91,7 @@
 			isa = PBXGroup;
 			children = (
 				A3F7587724AE3C2400B4ABD8 /* DrinkTrackerSample.app */,
+				A3F7588D24AE3DE400B4ABD8 /* WidgetsExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -69,6 +116,25 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		A3F7588E24AE3DE400B4ABD8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A3F7588F24AE3DE400B4ABD8 /* WidgetKit.framework */,
+				A3F7589124AE3DE400B4ABD8 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A3F7589324AE3DE400B4ABD8 /* Widgets */ = {
+			isa = PBXGroup;
+			children = (
+				A3F7589424AE3DE400B4ABD8 /* Widgets.swift */,
+				A3F7589624AE3DE600B4ABD8 /* Assets.xcassets */,
+				A3F7589824AE3DE600B4ABD8 /* Info.plist */,
+			);
+			path = Widgets;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -79,15 +145,34 @@
 				A3F7587324AE3C2400B4ABD8 /* Sources */,
 				A3F7587424AE3C2400B4ABD8 /* Frameworks */,
 				A3F7587524AE3C2400B4ABD8 /* Resources */,
+				A3F7589F24AE3DE600B4ABD8 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				A3F7589A24AE3DE600B4ABD8 /* PBXTargetDependency */,
 			);
 			name = DrinkTrackerSample;
 			productName = DrinkTrackerSample;
 			productReference = A3F7587724AE3C2400B4ABD8 /* DrinkTrackerSample.app */;
 			productType = "com.apple.product-type.application";
+		};
+		A3F7588C24AE3DE400B4ABD8 /* WidgetsExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A3F7589C24AE3DE600B4ABD8 /* Build configuration list for PBXNativeTarget "WidgetsExtension" */;
+			buildPhases = (
+				A3F7588924AE3DE400B4ABD8 /* Sources */,
+				A3F7588A24AE3DE400B4ABD8 /* Frameworks */,
+				A3F7588B24AE3DE400B4ABD8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = WidgetsExtension;
+			productName = WidgetsExtension;
+			productReference = A3F7588D24AE3DE400B4ABD8 /* WidgetsExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -99,6 +184,9 @@
 				LastUpgradeCheck = 1200;
 				TargetAttributes = {
 					A3F7587624AE3C2400B4ABD8 = {
+						CreatedOnToolsVersion = 12.0;
+					};
+					A3F7588C24AE3DE400B4ABD8 = {
 						CreatedOnToolsVersion = 12.0;
 					};
 				};
@@ -117,6 +205,7 @@
 			projectRoot = "";
 			targets = (
 				A3F7587624AE3C2400B4ABD8 /* DrinkTrackerSample */,
+				A3F7588C24AE3DE400B4ABD8 /* WidgetsExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -128,6 +217,14 @@
 			files = (
 				A3F7588224AE3C2600B4ABD8 /* Preview Assets.xcassets in Resources */,
 				A3F7587F24AE3C2600B4ABD8 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A3F7588B24AE3DE400B4ABD8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A3F7589724AE3DE600B4ABD8 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -143,7 +240,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A3F7588924AE3DE400B4ABD8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A3F7589524AE3DE400B4ABD8 /* Widgets.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A3F7589A24AE3DE600B4ABD8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A3F7588C24AE3DE400B4ABD8 /* WidgetsExtension */;
+			targetProxy = A3F7589924AE3DE600B4ABD8 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		A3F7588424AE3C2600B4ABD8 /* Debug */ = {
@@ -265,6 +378,7 @@
 		A3F7588724AE3C2600B4ABD8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
@@ -287,6 +401,7 @@
 		A3F7588824AE3C2600B4ABD8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
@@ -301,6 +416,48 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = me.apurin.DrinkTrackerSample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		A3F7589D24AE3DE600B4ABD8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = FK4VRNJVL7;
+				INFOPLIST_FILE = Widgets/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = me.apurin.DrinkTrackerSample.Widgets;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A3F7589E24AE3DE600B4ABD8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = FK4VRNJVL7;
+				INFOPLIST_FILE = Widgets/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = me.apurin.DrinkTrackerSample.Widgets;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -323,6 +480,15 @@
 			buildConfigurations = (
 				A3F7588724AE3C2600B4ABD8 /* Debug */,
 				A3F7588824AE3C2600B4ABD8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A3F7589C24AE3DE600B4ABD8 /* Build configuration list for PBXNativeTarget "WidgetsExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A3F7589D24AE3DE600B4ABD8 /* Debug */,
+				A3F7589E24AE3DE600B4ABD8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
