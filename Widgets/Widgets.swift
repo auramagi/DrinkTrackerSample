@@ -46,7 +46,51 @@ struct WidgetsEntryView : View {
     var entry: Provider.Entry
 
     var body: some View {
-        Text(entry.date, style: .time)
+        VStack {
+            HStack {
+                Spacer()
+                
+                Image(systemName: "drop.fill")
+                    .font(Font.body.weight(.heavy))
+                    .imageScale(.large)
+                    .foregroundColor(.accentColor)
+                    .padding([.top, .horizontal])
+            }
+            
+            VStack(alignment: .leading) {
+                Spacer()
+                
+                HStack {
+                    CellDetailView(timestamp: entry.date)
+                    
+                    Spacer()
+                }
+            }
+            .padding()
+        }
+        .background(Color(UIColor.secondarySystemGroupedBackground))
+    }
+}
+
+struct CellDetailView: View {
+    let timestamp: Date
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text("Water intake")
+                .font(.system(.subheadline, design: .rounded))
+        
+            // adding whitespace to line end prevent agrressive truncating (beta 1 bug)
+            Text("\(Text(timestamp, style: .relative))     ")
+                .font(.system(.headline, design: .rounded))
+            
+            Text(timestamp, style: .time)
+                .font(.system(.caption, design: .rounded))
+                .bold()
+                .imageScale(.small)
+                .foregroundColor(.secondary)
+                .padding(.bottom, 2)
+        }
     }
 }
 
@@ -60,5 +104,20 @@ struct Widgets: Widget {
         }
         .configurationDisplayName("My Widget")
         .description("This is an example widget.")
+    }
+}
+
+struct WidgetsEntryView_Previews: PreviewProvider {
+    static var previews: some View {
+        Group {
+            WidgetsEntryView(entry: .init(date: Date()))
+                .previewContext(WidgetPreviewContext(family: .systemSmall))
+                .environment(\.colorScheme, .light)
+            
+            
+            WidgetsEntryView(entry: .init(date: Date()))
+                .previewContext(WidgetPreviewContext(family: .systemSmall))
+                .environment(\.colorScheme, .dark)
+        }
     }
 }
