@@ -68,17 +68,9 @@ struct WidgetsEntryView : View {
             }
             .padding()
         }
-        .background(backgroundColor)
+        .background(Color.accentColor.opacity(0.10).blendMode(.hardLight))
     }
     
-    private var backgroundColor: some View {
-        Color(UIColor.secondarySystemGroupedBackground)
-            .overlay(
-                Color.accentColor
-                    .opacity(0.10)
-                    .blendMode(.hardLight)
-            )
-    }
 }
 
 struct CellDetailView: View {
@@ -120,8 +112,8 @@ struct Widgets: Widget {
         StaticConfiguration(kind: kind, provider: Provider(), placeholder: PlaceholderView()) { entry in
             WidgetsEntryView(entry: entry)
         }
-        .configurationDisplayName("My Widget")
-        .description("This is an example widget.")
+        .configurationDisplayName("Reminder")
+        .description("Your last drink, at a glance")
     }
 }
 
@@ -130,14 +122,14 @@ struct WidgetsEntryView_Previews: PreviewProvider {
         Group {
             WidgetsEntryView(entry: .init(date: Date()))
                 .previewContext(WidgetPreviewContext(family: .systemSmall))
+                .background(Color("WidgetBackground")) // Color from Assets
                 .environment(\.colorScheme, .light)
-                .environment(\.locale, Locale(identifier: "ja"))
             
             
             WidgetsEntryView(entry: .init(date: Date()))
                 .previewContext(WidgetPreviewContext(family: .systemSmall))
+                .background(Color("WidgetBackground")) // Color from Assets
                 .environment(\.colorScheme, .dark)
-                .environment(\.locale, Locale(identifier: "en"))
         }
     }
 }
