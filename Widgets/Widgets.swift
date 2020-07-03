@@ -8,28 +8,28 @@
 import WidgetKit
 import SwiftUI
 
-struct Model {
+struct WidgetModel {
     let lastDate: Date
     let stats: [Int]
 }
 
-extension Model {
-    static var previewData: Model {
-        Model(lastDate: Date().addingTimeInterval(-559), stats: [0, 2, 1])
+extension WidgetModel {
+    static var previewData: WidgetModel {
+        WidgetModel(lastDate: Date().addingTimeInterval(-559), stats: [1, 2, 5])
     }
 }
 
 struct Provider: TimelineProvider {
     public typealias Entry = SimpleEntry
-
+    
     public func snapshot(with context: Context, completion: @escaping (SimpleEntry) -> ()) {
         let entry = SimpleEntry(date: Date())
         completion(entry)
     }
-
+    
     public func timeline(with context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
         var entries: [SimpleEntry] = []
-
+        
         // Generate a timeline consisting of five entries an hour apart, starting from the current date.
         let currentDate = Date()
         for hourOffset in 0 ..< 5 {
@@ -37,7 +37,7 @@ struct Provider: TimelineProvider {
             let entry = SimpleEntry(date: entryDate)
             entries.append(entry)
         }
-
+        
         let timeline = Timeline(entries: entries, policy: .atEnd)
         completion(timeline)
     }
@@ -54,9 +54,9 @@ struct PlaceholderView : View {
 }
 
 struct WidgetsEntryView: View {
-    var model: Model
+    var model: WidgetModel
     @Environment(\.widgetFamily) var widgetFamily
-
+    
     var body: some View {
         HStack {
             VStack {
@@ -66,7 +66,10 @@ struct WidgetsEntryView: View {
                         .imageScale(.large)
                         .foregroundColor(.accentColor)
                         .frame(width: 60, height: 60)
-                        .background(ContainerRelativeShape().fill(Color(UIColor.systemFill)))
+                        .background(
+                            ContainerRelativeShape()
+                                .fill(Color(UIColor.systemFill))
+                        )
                         .padding([.top, .horizontal], 11)
                     
                     Spacer()
@@ -100,7 +103,6 @@ struct WidgetsEntryView: View {
             }
         }
         .background(Color.accentColor.opacity(0.10).blendMode(.hardLight))
-        .widgetURL(URL(string: "widget://stats/0")!)
     }
     
 }
@@ -133,13 +135,13 @@ struct DailyStatsLinkView: View {
 }
 
 struct CellDetailView: View {
-    let model: Model
+    let model: WidgetModel
     
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
             Text("Water intake")
                 .font(.system(.subheadline, design: .rounded))
-        
+            
             // adding whitespace to line end prevent agressive truncating (beta 1 bug)
             Text("\(Text(model.lastDate, style: .relative))                      ")
                 .font(.system(.headline, design: .rounded))
@@ -163,10 +165,11 @@ struct CellDetailView: View {
 @main
 struct Widgets: Widget {
     private let kind: String = "Widgets"
-
+    
     public var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: Provider(), placeholder: PlaceholderView()) { entry in
             WidgetsEntryView(model: .previewData)
+                .widgetURL(URL(string: "widget://stats/0")!)
         }
         .configurationDisplayName("Reminder")
         .description("Your last drink, at a glance")
