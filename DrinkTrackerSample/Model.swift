@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import WidgetKit
 
 struct Entry: Identifiable, Codable {
     let id: UUID
@@ -17,18 +18,16 @@ struct Entry: Identifiable, Codable {
 struct EntryLog: Codable {
     var entries: [Entry]
     
-    var startDate: Date {
+    var startDate: Date? {
         entries
             .map { $0.date }
             .min()
-            ?? Date()
     }
     
-    var endDate: Date {
+    var endDate: Date? {
         entries
             .map { $0.date }
             .max()
-            ?? Date()
     }
     
     func entries(day: Date) -> [Entry] {
@@ -47,7 +46,7 @@ class AppState: ObservableObject {
     @Published var errorAlert: ErrorAlertContent?
     
     init() {
-        if let folder = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+        if let folder = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.me.apurin.DrinkTrackerSample") {
             do {
                 try self.model = AppModel(folder: folder, ignoringCorruptedDatabase: false)
             } catch {
@@ -118,6 +117,7 @@ class AppModel: ObservableObject {
     
     func addEntry(_ entry: Entry) {
         entryLog.entries.append(entry)
+        WidgetCenter.shared.reloadAllTimelines()
     }
     
     func deleteEntries(ids: [UUID]) {

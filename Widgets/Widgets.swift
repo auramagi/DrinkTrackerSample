@@ -9,7 +9,7 @@ import WidgetKit
 import SwiftUI
 
 struct WidgetModel {
-    let lastDate: Date
+    let lastDate: Date?
     let stats: [Int]
 }
 
@@ -23,7 +23,7 @@ struct Provider: TimelineProvider {
     public typealias Entry = SimpleEntry
     
     public func snapshot(with context: Context, completion: @escaping (SimpleEntry) -> ()) {
-        let entry = SimpleEntry(date: Date())
+        let entry = SimpleEntry(date: Date(), model: loadModel())
         completion(entry)
     }
     
@@ -34,17 +34,33 @@ struct Provider: TimelineProvider {
         let currentDate = Date()
         for hourOffset in 0 ..< 5 {
             let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-            let entry = SimpleEntry(date: entryDate)
+            let entry = SimpleEntry(date: entryDate, model: loadModel())
             entries.append(entry)
         }
         
         let timeline = Timeline(entries: entries, policy: .atEnd)
         completion(timeline)
     }
+    
+    private func loadModel() -> WidgetModel {
+        let appModel = AppState().model!
+        
+        let widgetModel = WidgetModel(
+            lastDate: appModel.entryLog.endDate,
+            stats: [
+                appModel.entryLog.amount(day: Date.day(offsetFromToday: 0)),
+                appModel.entryLog.amount(day: Date.day(offsetFromToday: 1)),
+                appModel.entryLog.amount(day: Date.day(offsetFromToday: 2))
+            ]
+        )
+        
+        return widgetModel
+    }
 }
 
 struct SimpleEntry: TimelineEntry {
     public let date: Date
+    let model: WidgetModel
 }
 
 struct PlaceholderView : View {
@@ -142,23 +158,29 @@ struct CellDetailView: View {
             Text("Water intake")
                 .font(.system(.subheadline, design: .rounded))
             
-            // adding whitespace to line end prevent agressive truncating (beta 1 bug)
-            Text("\(Text(model.lastDate, style: .relative))                      ")
-                .font(.system(.headline, design: .rounded))
-            
-            Text(timestampString)
-                .font(.system(.caption, design: .rounded)).bold()
-                .foregroundColor(.secondary)
+            if let date = model.lastDate {
+                // adding whitespace to line end prevent agressive truncating (beta 1 bug)
+                Text("\(Text(date, style: .relative))                      ")
+                    .font(.system(.headline, design: .rounded))
+                
+                Text(timestampString(date))
+                    .font(.system(.caption, design: .rounded)).bold()
+                    .foregroundColor(.secondary)
+            } else {
+                Text("Nothing logged so far")
+                    .font(.system(.caption, design: .rounded)).bold()
+                    .foregroundColor(.secondary)
+            }
         }
     }
     
-    var timestampString: String {
+    private func timestampString(_ date: Date) -> String {
         let df = DateFormatter()
         df.dateStyle = .short
         df.timeStyle = .short
         df.doesRelativeDateFormatting = true
         
-        return df.string(from: model.lastDate)
+        return df.string(from: date)
     }
 }
 
@@ -168,7 +190,7 @@ struct Widgets: Widget {
     
     public var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: Provider(), placeholder: PlaceholderView()) { entry in
-            WidgetsEntryView(model: .previewData)
+            WidgetsEntryView(model: entry.model)
                 .widgetURL(URL(string: "widget://stats/0")!)
         }
         .configurationDisplayName("Reminder")

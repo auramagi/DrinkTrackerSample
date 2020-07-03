@@ -16,7 +16,7 @@ struct ContentView: View {
         NavigationView {
             ScrollView {
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 160))], spacing: 8) {
-                    ForEach(Date().days(enumeratingDownTo: model.entryLog.startDate), id: \.self) {
+                    ForEach(Date().days(enumeratingDownTo: model.entryLog.startDate ?? Date()), id: \.self) {
                         day in
                         NavigationLink(
                             destination: DayView(day: day).environmentObject(model),
