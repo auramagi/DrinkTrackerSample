@@ -8,6 +8,17 @@
 import WidgetKit
 import SwiftUI
 
+struct Model {
+    let lastDate: Date
+    let stats: [Int]
+}
+
+extension Model {
+    static var previewData: Model {
+        Model(lastDate: Date().addingTimeInterval(-559), stats: [0, 2, 1])
+    }
+}
+
 struct Provider: TimelineProvider {
     public typealias Entry = SimpleEntry
 
@@ -42,39 +53,94 @@ struct PlaceholderView : View {
     }
 }
 
-struct WidgetsEntryView : View {
-    var entry: Provider.Entry
+struct WidgetsEntryView: View {
+    var model: Model
+    @Environment(\.widgetFamily) var widgetFamily
 
     var body: some View {
-        VStack {
-            HStack {
-                Spacer()
-                
-                Image(systemName: "drop.fill")
-                    .font(Font.body.weight(.heavy))
-                    .imageScale(.large)
-                    .foregroundColor(.accentColor)
-                    .padding([.top, .horizontal])
-            }
-            
-            VStack(alignment: .leading) {
-                Spacer()
-                
+        HStack {
+            VStack {
                 HStack {
-                    CellDetailView(timestamp: entry.date)
+                    Image(systemName: "drop.fill")
+                        .font(Font.body.weight(.heavy))
+                        .imageScale(.large)
+                        .foregroundColor(.accentColor)
+                        .frame(width: 60, height: 60)
+                        .background(ContainerRelativeShape().fill(Color(UIColor.systemFill)))
+                        .padding([.top, .horizontal], 11)
                     
                     Spacer()
                 }
+                
+                VStack(alignment: .leading) {
+                    Spacer()
+                    
+                    HStack {
+                        CellDetailView(model: model)
+                        
+                        Spacer()
+                    }
+                }
+                .padding()
             }
-            .padding()
+            
+            if widgetFamily == .systemMedium {
+                Divider()
+                
+                VStack {
+                    ForEach(model.stats.indices.reversed(), id: \.self) { index in
+                        DailyStatsLinkView(offset: index, amount: model.stats[index])
+                        
+                        if index > 0 {
+                            Spacer()
+                        }
+                    }
+                }
+                .padding()
+            }
         }
         .background(Color.accentColor.opacity(0.10).blendMode(.hardLight))
     }
     
 }
 
+struct DailyStatsLinkView: View {
+    let offset: Int
+    let amount: Int
+    
+    var body: some View {
+        Link(destination: URL(string: "widget://stats/\(offset)")!) {
+            VStack {
+                Text(amountLabel)
+                    .font(.headline)
+                
+                Text(relativeDayLabel)
+                    .font(.system(.caption, design: .rounded)).bold()
+                    .foregroundColor(.secondary)
+            }
+        }
+    }
+    
+    private var relativeDayLabel: String {
+        switch offset {
+        case 0: return "Today"
+        case 1: return "Yesterday"
+        case 2: return "1 day ago"
+        default: return "\(offset) days ago"
+        }
+    }
+    
+    private var amountLabel: String {
+        if amount == 1 {
+            return "1 glass"
+        } else {
+            return "\(amount) glasses"
+        }
+    }
+}
+
 struct CellDetailView: View {
-    let timestamp: Date
+    let model: Model
     
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
@@ -82,15 +148,12 @@ struct CellDetailView: View {
                 .font(.system(.subheadline, design: .rounded))
         
             // adding whitespace to line end prevent agressive truncating (beta 1 bug)
-            Text("\(Text(timestamp.addingTimeInterval(-559), style: .relative))                      ")
+            Text("\(Text(model.lastDate, style: .relative))                      ")
                 .font(.system(.headline, design: .rounded))
             
             Text(timestampString)
-                .font(.system(.caption, design: .rounded))
-                .bold()
-                .imageScale(.small)
+                .font(.system(.caption, design: .rounded)).bold()
                 .foregroundColor(.secondary)
-                .padding(.bottom, 2)
         }
     }
     
@@ -100,7 +163,7 @@ struct CellDetailView: View {
         df.timeStyle = .short
         df.doesRelativeDateFormatting = true
         
-        return df.string(from: timestamp)
+        return df.string(from: model.lastDate)
     }
 }
 
@@ -110,24 +173,34 @@ struct Widgets: Widget {
 
     public var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: Provider(), placeholder: PlaceholderView()) { entry in
-            WidgetsEntryView(entry: entry)
+            WidgetsEntryView(model: .previewData)
         }
         .configurationDisplayName("Reminder")
         .description("Your last drink, at a glance")
+        .supportedFamilies([.systemSmall, .systemMedium])
     }
 }
 
 struct WidgetsEntryView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            WidgetsEntryView(entry: .init(date: Date()))
+            WidgetsEntryView(model: .previewData)
                 .previewContext(WidgetPreviewContext(family: .systemSmall))
                 .background(Color("WidgetBackground")) // Color from Assets
                 .environment(\.colorScheme, .light)
             
-            
-            WidgetsEntryView(entry: .init(date: Date()))
+            WidgetsEntryView(model: .previewData)
                 .previewContext(WidgetPreviewContext(family: .systemSmall))
+                .background(Color("WidgetBackground")) // Color from Assets
+                .environment(\.colorScheme, .dark)
+            
+            WidgetsEntryView(model: .previewData)
+                .previewContext(WidgetPreviewContext(family: .systemMedium))
+                .background(Color("WidgetBackground")) // Color from Assets
+                .environment(\.colorScheme, .light)
+            
+            WidgetsEntryView(model: .previewData)
+                .previewContext(WidgetPreviewContext(family: .systemMedium))
                 .background(Color("WidgetBackground")) // Color from Assets
                 .environment(\.colorScheme, .dark)
         }
