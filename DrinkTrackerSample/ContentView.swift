@@ -7,55 +7,8 @@
 
 import SwiftUI
 
-class AppState: ObservableObject {
-    @Published var model: ContentModel
-    @Published var selected: Date?
-    @Published var isAddingEntry: Bool = false
-    
-    init(model: ContentModel) {
-        self.model = model
-    }
-}
-
-struct ContentModel {
-    let entries: [Date]
-    
-    var startDate: Date {
-        entries.min() ?? Date()
-    }
-    
-    func entries(day: Date) -> [Date] {
-        let range = day.dayRange()
-        return entries.filter { range.contains($0) }
-    }
-}
-
-extension ContentModel {
-    static var previewData: ContentModel {
-        ContentModel(entries: [
-            sampleData(day: Date.day(offsetFromToday: 0), sampleCount: 3),
-            sampleData(day: Date.day(offsetFromToday: 1), sampleCount: 5),
-            sampleData(day: Date.day(offsetFromToday: 2), sampleCount: 6),
-            sampleData(day: Date.day(offsetFromToday: 3), sampleCount: 6),
-            sampleData(day: Date.day(offsetFromToday: 4), sampleCount: 5),
-            sampleData(day: Date.day(offsetFromToday: 5), sampleCount: 7),
-        ].flatMap({ $0 }))
-    }
-    
-    private static func sampleData(day: Date, sampleCount: Int) -> [Date] {
-        (0..<sampleCount).map { _ in
-            Calendar.current.date(
-                bySettingHour: (2...11).randomElement()!,
-                minute: (0...59).randomElement()!,
-                second: 0,
-                of: day
-            )!
-        }
-    }
-}
-
 struct ContentView: View {
-    @EnvironmentObject var state: AppState
+    @EnvironmentObject var model: AppModel
     
     @State var isShowingWidgetSelectedDate: Bool = false
     
@@ -63,28 +16,28 @@ struct ContentView: View {
         NavigationView {
             ScrollView {
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 160))], spacing: 8) {
-                    ForEach(Date().days(enumeratingDownTo: state.model.startDate), id: \.self) {
+                    ForEach(Date().days(enumeratingDownTo: model.model.startDate), id: \.self) {
                         day in
                         NavigationLink(
-                            destination: DayView(day: day).environmentObject(state),
+                            destination: DayView(day: day).environmentObject(model),
                             tag: day,
-                            selection: $state.selected,
-                            label: { DayGridItem(day: day).environmentObject(state) }
+                            selection: $model.selected,
+                            label: { DayGridItem(day: day, model: model.model) }
                         )
                     }
                 }
                 .padding()
                 
-                if let selected = state.selected {
+                if let selected = model.selected {
                     NavigationLink(
-                        destination: DayView(day: selected).environmentObject(state),
+                        destination: DayView(day: selected).environmentObject(model),
                         isActive: $isShowingWidgetSelectedDate,
                         label: { EmptyView() }
                     ).hidden()
                 }
                 
             }
-            .onReceive(state.$selected) { date in
+            .onReceive(model.$selected) { date in
                 isShowingWidgetSelectedDate = date != nil
             }
             .background(Color("GridBackground"))
@@ -92,7 +45,7 @@ struct ContentView: View {
             
             .toolbar {
                 ToolbarItem {
-                    Button(action: { state.isAddingEntry = true }) {
+                    Button(action: { model.isAddingEntry = true }) {
                         HStack {
                             Image(systemName: "plus.circle")
                             
@@ -102,61 +55,19 @@ struct ContentView: View {
                 }
             }
         }
-        .sheet(isPresented: $state.isAddingEntry, content: { AddEntrySheet(date: state.selected ?? Date()) })
+        .sheet(isPresented: $model.isAddingEntry, content: makeSheetContent)
+    }
+    
+    private func makeSheetContent() -> some View {
+        AddEntrySheet(date: model.selected ?? Date())
+            .environmentObject(model)
     }
     
 }
 
-struct AddEntrySheet: View {
-    @State var date: Date
-    @State var amount: Int = 1
-
-    @Environment(\.presentationMode) var presentation
-    
-    @ViewBuilder
-    var body: some View {
-//        Form {
-//            Section {
-//        ZStack {
-//        ScrollView {
-        VStack {
-            DatePicker(selection: $date, label: { Text("Date") })
-                .datePickerStyle(GraphicalDatePickerStyle())
-                .frame(height: 450)
-                .aspectRatio(contentMode: .fit)
-            
-            Spacer()
-            
-            Stepper(value: $amount, in: 1...10, step: 1, label: { Text(Strings.glassCount(amount)).font(.headline) })
-                .frame(width: 232)
-            
-            Spacer()
-            
-            Button(
-                action: { presentation.wrappedValue.dismiss() },
-                label: { Text("Add")
-                    .font(.headline).bold()
-                    .foregroundColor(.white)
-                    .frame(width: 232)
-                    .padding(.vertical)
-                    .background(RoundedRectangle(cornerRadius: 12).fill(Color.accentColor))
-                    
-                }
-            )
-            
-            Spacer()
-        }
-//                    .scaledToFit()
-//        }
-//            }
-        }
-//    }
-}
-
 struct DayGridItem: View {
     let day: Date
-    
-    @EnvironmentObject var state: AppState
+    let model: ContentModel
     
     var body: some View {
         ZStack {
@@ -164,7 +75,7 @@ struct DayGridItem: View {
                 .fill(Color("GridItemBackground"))
             
             VStack {
-                Text("\(state.model.entries(day: day).count) Glasses")
+                Text("\(model.entries(day: day).count) Glasses")
                         .font(.headline)
                 
                 Text(DayFormat.dateFormatter.string(from: day))
@@ -177,15 +88,15 @@ struct DayGridItem: View {
 }
 
 struct ContentView_Previews: PreviewProvider {
-    static let state: AppState = .init(model: .previewData)
+    static let model: AppModel = .init(model: .previewData)
     static var previews: some View {
         Group {
             ContentView()
-                .environmentObject(state)
+                .environmentObject(model)
                 .environment(\.colorScheme, .light)
             
             ContentView()
-                .environmentObject(state)
+                .environmentObject(model)
                 .environment(\.colorScheme, .dark)
         }
     }

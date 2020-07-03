@@ -9,14 +9,35 @@ import SwiftUI
 
 @main
 struct DrinkTrackerSampleApp: App {
-    @State var state: AppState = .init(model: .previewData)
+    @State var state = AppState()
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environmentObject(state)
+            windowContent
+                .alert(item: $state.errorAlert, content: makeErrorAlert)
                 .onOpenURL(perform: handleURL)
         }
+    }
+    
+    @ViewBuilder
+    private var windowContent: some View {
+        if let model = state.model {
+            ContentView().environmentObject(model)
+        } else {
+            EmptyView()
+        }
+    }
+    
+    private func makeErrorAlert(content: ErrorAlertContent) -> Alert {
+        Alert(
+            title: Text(content.title),
+            message: Text(content.message),
+            dismissButton: .default(Text("OK"), action: { [state] in
+                if state.model == nil {
+                    fatalError("Critical app error")
+                }
+            })
+        )
     }
     
     private func handleURL(_ url: URL) {
@@ -26,7 +47,7 @@ struct DrinkTrackerSampleApp: App {
         else { return }
         
         let day = Date.day(offsetFromToday: offset)
-        state.selected = day
+        state.model?.selected = day
     }
     
 }

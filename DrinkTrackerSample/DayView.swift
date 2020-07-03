@@ -10,11 +10,11 @@ import SwiftUI
 struct DayView: View {
     let day: Date
     
-    @EnvironmentObject var state: AppState
+    @EnvironmentObject var model: AppModel
     
     var body: some View {
         List {
-            ForEach(state.model.entries(day: day).sorted(by: >), id: \.self) { entry in
+            ForEach(model.model.entries(day: day).sorted(by: >), id: \.self) { entry in
                 HStack {
                     Text("1 glass")
                         .font(.headline).bold()
@@ -29,7 +29,7 @@ struct DayView: View {
         }
         .toolbar {
             ToolbarItem {
-                Button(action: { state.isAddingEntry = true }) {
+                Button(action: { model.isAddingEntry = true }) {
                     HStack {
                         Image(systemName: "plus.circle")
                         
@@ -43,15 +43,15 @@ struct DayView: View {
 }
 
 struct DayView_Previews: PreviewProvider {
-    static let state: AppState = .init(model: .previewData)
+    static let model: AppModel = .init(model: .previewData)
     static var previews: some View {
         Group {
             DayView(day: Date())
-                .environmentObject(state)
+                .environmentObject(model)
                 .environment(\.colorScheme, .light)
             
             DayView(day: Date())
-                .environmentObject(state)
+                .environmentObject(model)
                 .environment(\.colorScheme, .dark)
         }
     }
