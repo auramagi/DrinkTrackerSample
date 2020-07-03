@@ -14,7 +14,7 @@ struct Entry: Identifiable, Codable {
     let amount: Int
 }
 
-struct ContentModel: Codable {
+struct EntryLog: Codable {
     var entries: [Entry]
     
     var startDate: Date {
@@ -31,11 +31,10 @@ struct ContentModel: Codable {
             ?? Date()
     }
     
-    func entries(day: Date) -> [Date] {
+    func entries(day: Date) -> [Entry] {
         let range = day.dayRange()
         return entries
-            .map { $0.date }
-            .filter { range.contains($0) }
+            .filter { range.contains($0.date) }
     }
 }
 
@@ -59,11 +58,11 @@ class AppState: ObservableObject {
 }
 
 class AppModel: ObservableObject {
-    private let persistance: Persistance<ContentModel>
+    private let persistance: Persistance<EntryLog>
     private var cancellables: [AnyCancellable] = []
     private let workQueue: DispatchQueue = DispatchQueue(label: "EntryStore.WorkQueue", qos: .userInitiated)
     
-    @Published private(set) var model: ContentModel
+    @Published private(set) var entryLog: EntryLog
     @Published private(set) var persistanceSyncStatus: SyncStatus = .synced
     
     @Published var selected: Date?
@@ -75,24 +74,25 @@ class AppModel: ObservableObject {
         case error(Error)
     }
     
-    init(model: ContentModel) {
-        self.persistance = Persistance(folder: URL(string: "")!, fileName: "entries.json", defaultValue: ContentModel(entries: []))
-        self.model = model
+    init(entryLog: EntryLog) {
+        let folder = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        self.persistance = Persistance(folder: folder, fileName: "entries.json", defaultValue: EntryLog(entries: []))
+        self.entryLog = entryLog
     }
        
     init(folder: URL, ignoringCorruptedDatabase: Bool) throws {
-        self.persistance = Persistance(folder: folder, fileName: "entries.json", defaultValue: ContentModel(entries: []))
+        self.persistance = Persistance(folder: folder, fileName: "entries.json", defaultValue: EntryLog(entries: []))
         do {
-            self.model = try persistance.load()
+            self.entryLog = try persistance.load()
         } catch {
             if ignoringCorruptedDatabase {
-                self.model = ContentModel(entries: [])
+                self.entryLog = EntryLog(entries: [])
             } else {
                 throw error
             }
         }
         
-        _model.projectedValue
+        _entryLog.projectedValue
             .debounce(for: 1, scheduler: workQueue)
             .sink { [weak self] lists in
                 self?.receiveSyncUpdate(.synced)
@@ -113,7 +113,7 @@ class AppModel: ObservableObject {
     }
     
     func addEntry(_ entry: Entry) {
-        model.entries.append(entry)
+        entryLog.entries.append(entry)
     }
     
 }
@@ -154,9 +154,9 @@ struct ErrorAlertContent: Identifiable {
 
 
 
-extension ContentModel {
-    static var previewData: ContentModel {
-        ContentModel(entries: [
+extension EntryLog {
+    static var previewData: EntryLog {
+        EntryLog(entries: [
             sampleData(day: Date.day(offsetFromToday: 0), sampleCount: 3),
             sampleData(day: Date.day(offsetFromToday: 1), sampleCount: 5),
             sampleData(day: Date.day(offsetFromToday: 2), sampleCount: 6),

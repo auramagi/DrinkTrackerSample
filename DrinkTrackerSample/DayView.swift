@@ -14,14 +14,14 @@ struct DayView: View {
     
     var body: some View {
         List {
-            ForEach(model.model.entries(day: day).sorted(by: >), id: \.self) { entry in
+            ForEach(model.entryLog.entries(day: day).sorted(by: { $0.date > $1.date }), id: \.date) { entry in
                 HStack {
-                    Text("1 glass")
+                    Text(Strings.glassCount(entry.amount))
                         .font(.headline).bold()
                     
                     Spacer()
                     
-                    Text(DayFormat.timeFormatter.string(from: entry))
+                    Text(DayFormat.timeFormatter.string(from: entry.date))
                         .font(.system(.caption, design: .rounded)).bold()
                         .foregroundColor(.secondary)
                 }
@@ -43,7 +43,7 @@ struct DayView: View {
 }
 
 struct DayView_Previews: PreviewProvider {
-    static let model: AppModel = .init(model: .previewData)
+    static let model: AppModel = .init(entryLog: .previewData)
     static var previews: some View {
         Group {
             DayView(day: Date())

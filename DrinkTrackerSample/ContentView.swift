@@ -16,13 +16,13 @@ struct ContentView: View {
         NavigationView {
             ScrollView {
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 160))], spacing: 8) {
-                    ForEach(Date().days(enumeratingDownTo: model.model.startDate), id: \.self) {
+                    ForEach(Date().days(enumeratingDownTo: model.entryLog.startDate), id: \.self) {
                         day in
                         NavigationLink(
                             destination: DayView(day: day).environmentObject(model),
                             tag: day,
                             selection: $model.selected,
-                            label: { DayGridItem(day: day, model: model.model) }
+                            label: { DayGridItem(day: day, model: model.entryLog) }
                         )
                     }
                 }
@@ -67,7 +67,7 @@ struct ContentView: View {
 
 struct DayGridItem: View {
     let day: Date
-    let model: ContentModel
+    let model: EntryLog
     
     var body: some View {
         ZStack {
@@ -75,7 +75,7 @@ struct DayGridItem: View {
                 .fill(Color("GridItemBackground"))
             
             VStack {
-                Text("\(model.entries(day: day).count) Glasses")
+                Text(Strings.glassCount(model.entries(day: day).count))
                         .font(.headline)
                 
                 Text(DayFormat.dateFormatter.string(from: day))
@@ -88,7 +88,7 @@ struct DayGridItem: View {
 }
 
 struct ContentView_Previews: PreviewProvider {
-    static let model: AppModel = .init(model: .previewData)
+    static let model: AppModel = .init(entryLog: .previewData)
     static var previews: some View {
         Group {
             ContentView()
