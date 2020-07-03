@@ -122,6 +122,7 @@ class AppModel: ObservableObject {
     
     func deleteEntries(ids: [UUID]) {
         entryLog.entries.removeAll { ids.contains($0.id) }
+        WidgetCenter.shared.reloadAllTimelines()
     }
     
 }
