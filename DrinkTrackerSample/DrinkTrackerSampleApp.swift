@@ -26,7 +26,7 @@ struct DrinkTrackerSampleApp: App {
         else { return }
         
         let day = Date.day(offsetFromToday: offset)
-        state.widgetSelected = day
+        state.selected = day
     }
     
 }

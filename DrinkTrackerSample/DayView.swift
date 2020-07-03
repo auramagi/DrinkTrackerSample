@@ -27,6 +27,17 @@ struct DayView: View {
                 }
             }
         }
+        .toolbar {
+            ToolbarItem {
+                Button(action: { state.isAddingEntry = true }) {
+                    HStack {
+                        Image(systemName: "plus.circle")
+                        
+                        Text("Add a glass")
+                    }
+                }
+            }
+        }
         .navigationTitle(DayFormat.dateFormatter.string(from: day))
     }
 }

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A3011F8324AEF28400E8C897 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3011F8224AEF28400E8C897 /* Model.swift */; };
+		A3011F8424AEF2BB00E8C897 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3011F8224AEF28400E8C897 /* Model.swift */; };
 		A3EB9BC624AED4CD000913A7 /* Date+days.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3EB9BC524AED4CD000913A7 /* Date+days.swift */; };
 		A3EB9BC824AEDAFB000913A7 /* DayFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3EB9BC724AEDAFB000913A7 /* DayFormat.swift */; };
 		A3EB9BCA24AEE20A000913A7 /* DayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3EB9BC924AEE20A000913A7 /* DayView.swift */; };
@@ -46,6 +48,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A3011F8224AEF28400E8C897 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		A3EB9BC524AED4CD000913A7 /* Date+days.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+days.swift"; sourceTree = "<group>"; };
 		A3EB9BC724AEDAFB000913A7 /* DayFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayFormat.swift; sourceTree = "<group>"; };
 		A3EB9BC924AEE20A000913A7 /* DayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayView.swift; sourceTree = "<group>"; };
@@ -107,6 +110,7 @@
 			children = (
 				A3F7587A24AE3C2400B4ABD8 /* DrinkTrackerSampleApp.swift */,
 				A3F7587C24AE3C2400B4ABD8 /* ContentView.swift */,
+				A3011F8224AEF28400E8C897 /* Model.swift */,
 				A3EB9BC924AEE20A000913A7 /* DayView.swift */,
 				A3EB9BC724AEDAFB000913A7 /* DayFormat.swift */,
 				A3EB9BC524AED4CD000913A7 /* Date+days.swift */,
@@ -247,6 +251,7 @@
 				A3F7587D24AE3C2400B4ABD8 /* ContentView.swift in Sources */,
 				A3EB9BCA24AEE20A000913A7 /* DayView.swift in Sources */,
 				A3EB9BC624AED4CD000913A7 /* Date+days.swift in Sources */,
+				A3011F8324AEF28400E8C897 /* Model.swift in Sources */,
 				A3F7587B24AE3C2400B4ABD8 /* DrinkTrackerSampleApp.swift in Sources */,
 				A3EB9BC824AEDAFB000913A7 /* DayFormat.swift in Sources */,
 			);
@@ -257,6 +262,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A3F7589524AE3DE400B4ABD8 /* Widgets.swift in Sources */,
+				A3011F8424AEF2BB00E8C897 /* Model.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

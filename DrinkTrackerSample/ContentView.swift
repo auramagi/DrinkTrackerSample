@@ -9,7 +9,8 @@ import SwiftUI
 
 class AppState: ObservableObject {
     @Published var model: ContentModel
-    @Published var widgetSelected: Date?
+    @Published var selected: Date?
+    @Published var isAddingEntry: Bool = false
     
     init(model: ContentModel) {
         self.model = model
@@ -66,13 +67,15 @@ struct ContentView: View {
                         day in
                         NavigationLink(
                             destination: DayView(day: day).environmentObject(state),
+                            tag: day,
+                            selection: $state.selected,
                             label: { DayGridItem(day: day).environmentObject(state) }
                         )
                     }
                 }
                 .padding()
                 
-                if let selected = state.widgetSelected {
+                if let selected = state.selected {
                     NavigationLink(
                         destination: DayView(day: selected).environmentObject(state),
                         isActive: $isShowingWidgetSelectedDate,
@@ -81,17 +84,73 @@ struct ContentView: View {
                 }
                 
             }
-            .onReceive(state.$widgetSelected) { date in
+            .onReceive(state.$selected) { date in
                 isShowingWidgetSelectedDate = date != nil
             }
             .background(Color("GridBackground"))
             .navigationTitle("Drink tracker")
             
-           
-            
+            .toolbar {
+                ToolbarItem {
+                    Button(action: { state.isAddingEntry = true }) {
+                        HStack {
+                            Image(systemName: "plus.circle")
+                            
+                            Text("Add a glass")
+                        }
+                    }
+                }
+            }
         }
+        .sheet(isPresented: $state.isAddingEntry, content: { AddEntrySheet(date: state.selected ?? Date()) })
     }
     
+}
+
+struct AddEntrySheet: View {
+    @State var date: Date
+    @State var amount: Int = 1
+
+    @Environment(\.presentationMode) var presentation
+    
+    @ViewBuilder
+    var body: some View {
+//        Form {
+//            Section {
+//        ZStack {
+//        ScrollView {
+        VStack {
+            DatePicker(selection: $date, label: { Text("Date") })
+                .datePickerStyle(GraphicalDatePickerStyle())
+                .frame(height: 450)
+                .aspectRatio(contentMode: .fit)
+            
+            Spacer()
+            
+            Stepper(value: $amount, in: 1...10, step: 1, label: { Text(Strings.glassCount(amount)).font(.headline) })
+                .frame(width: 232)
+            
+            Spacer()
+            
+            Button(
+                action: { presentation.wrappedValue.dismiss() },
+                label: { Text("Add")
+                    .font(.headline).bold()
+                    .foregroundColor(.white)
+                    .frame(width: 232)
+                    .padding(.vertical)
+                    .background(RoundedRectangle(cornerRadius: 12).fill(Color.accentColor))
+                    
+                }
+            )
+            
+            Spacer()
+        }
+//                    .scaledToFit()
+//        }
+//            }
+        }
+//    }
 }
 
 struct DayGridItem: View {

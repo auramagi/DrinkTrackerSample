@@ -112,7 +112,7 @@ struct DailyStatsLinkView: View {
     var body: some View {
         Link(destination: URL(string: "widget://stats/\(offset)")!) {
             VStack {
-                Text(amountLabel)
+                Text(Strings.glassCount(amount))
                     .font(.headline)
                 
                 Text(relativeDayLabel)
@@ -128,14 +128,6 @@ struct DailyStatsLinkView: View {
         case 1: return "Yesterday"
         case 2: return "1 day ago"
         default: return "\(offset) days ago"
-        }
-    }
-    
-    private var amountLabel: String {
-        if amount == 1 {
-            return "1 glass"
-        } else {
-            return "\(amount) glasses"
         }
     }
 }
