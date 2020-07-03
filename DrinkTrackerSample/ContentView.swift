@@ -7,6 +7,15 @@
 
 import SwiftUI
 
+class AppState: ObservableObject {
+    @Published var model: ContentModel
+    @Published var widgetSelected: Date?
+    
+    init(model: ContentModel) {
+        self.model = model
+    }
+}
+
 struct ContentModel {
     let entries: [Date]
     
@@ -45,31 +54,47 @@ extension ContentModel {
 }
 
 struct ContentView: View {
-    let model: ContentModel
+    @EnvironmentObject var state: AppState
+    
+    @State var isShowingWidgetSelectedDate: Bool = false
     
     var body: some View {
         NavigationView {
             ScrollView {
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 160))], spacing: 8) {
-                    ForEach(Date().days(enumeratingDownTo: model.startDate), id: \.self) {
+                    ForEach(Date().days(enumeratingDownTo: state.model.startDate), id: \.self) {
                         day in
-                        NavigationLink(destination: DayView(model: model, day: day)) {
-                            DayGridItem(model: model, day: day)
-                        }
+                        NavigationLink(
+                            destination: DayView(day: day).environmentObject(state),
+                            label: { DayGridItem(day: day).environmentObject(state) }
+                        )
                     }
                 }
                 .padding()
+                
+                if let selected = state.widgetSelected {
+                    NavigationLink(
+                        destination: DayView(day: selected).environmentObject(state),
+                        isActive: $isShowingWidgetSelectedDate,
+                        label: { EmptyView() }
+                    ).hidden()
+                }
+                
             }
             .background(Color("GridBackground"))
             .navigationTitle("Drink tracker")
+            
+           
+            
         }
     }
     
 }
 
 struct DayGridItem: View {
-    let model: ContentModel
     let day: Date
+    
+    @EnvironmentObject var state: AppState
     
     var body: some View {
         ZStack {
@@ -77,7 +102,7 @@ struct DayGridItem: View {
                 .fill(Color("GridItemBackground"))
             
             VStack {
-                Text("\(model.entries(day: day).count) Glasses")
+                Text("\(state.model.entries(day: day).count) Glasses")
                         .font(.headline)
                 
                 Text(DayFormat.dateFormatter.string(from: day))
@@ -89,37 +114,16 @@ struct DayGridItem: View {
     }
 }
 
-struct DayView: View {
-    let model: ContentModel
-    let day: Date
-    
-    
-    var body: some View {
-        List {
-            ForEach(model.entries(day: day).sorted(by: >), id: \.self) { entry in
-                HStack {
-                    Text("1 glass")
-                        .font(.headline).bold()
-                    
-                    Spacer()
-                    
-                    Text(DayFormat.timeFormatter.string(from: entry))
-                        .font(.system(.caption, design: .rounded)).bold()
-                        .foregroundColor(.secondary)
-                }
-            }
-        }
-        .navigationTitle(DayFormat.dateFormatter.string(from: day))
-    }
-}
-
 struct ContentView_Previews: PreviewProvider {
+    static let state: AppState = .init(model: .previewData)
     static var previews: some View {
         Group {
-            ContentView(model: .previewData)
+            ContentView()
+                .environmentObject(state)
                 .environment(\.colorScheme, .light)
             
-            ContentView(model: .previewData)
+            ContentView()
+                .environmentObject(state)
                 .environment(\.colorScheme, .dark)
         }
     }

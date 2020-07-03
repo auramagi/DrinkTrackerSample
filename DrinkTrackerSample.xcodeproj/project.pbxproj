@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		A3EB9BC624AED4CD000913A7 /* Date+days.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3EB9BC524AED4CD000913A7 /* Date+days.swift */; };
 		A3EB9BC824AEDAFB000913A7 /* DayFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3EB9BC724AEDAFB000913A7 /* DayFormat.swift */; };
+		A3EB9BCA24AEE20A000913A7 /* DayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3EB9BC924AEE20A000913A7 /* DayView.swift */; };
 		A3F7587B24AE3C2400B4ABD8 /* DrinkTrackerSampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F7587A24AE3C2400B4ABD8 /* DrinkTrackerSampleApp.swift */; };
 		A3F7587D24AE3C2400B4ABD8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F7587C24AE3C2400B4ABD8 /* ContentView.swift */; };
 		A3F7587F24AE3C2600B4ABD8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A3F7587E24AE3C2600B4ABD8 /* Assets.xcassets */; };
@@ -47,6 +48,7 @@
 /* Begin PBXFileReference section */
 		A3EB9BC524AED4CD000913A7 /* Date+days.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+days.swift"; sourceTree = "<group>"; };
 		A3EB9BC724AEDAFB000913A7 /* DayFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayFormat.swift; sourceTree = "<group>"; };
+		A3EB9BC924AEE20A000913A7 /* DayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayView.swift; sourceTree = "<group>"; };
 		A3F7587724AE3C2400B4ABD8 /* DrinkTrackerSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DrinkTrackerSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3F7587A24AE3C2400B4ABD8 /* DrinkTrackerSampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrinkTrackerSampleApp.swift; sourceTree = "<group>"; };
 		A3F7587C24AE3C2400B4ABD8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -105,6 +107,7 @@
 			children = (
 				A3F7587A24AE3C2400B4ABD8 /* DrinkTrackerSampleApp.swift */,
 				A3F7587C24AE3C2400B4ABD8 /* ContentView.swift */,
+				A3EB9BC924AEE20A000913A7 /* DayView.swift */,
 				A3EB9BC724AEDAFB000913A7 /* DayFormat.swift */,
 				A3EB9BC524AED4CD000913A7 /* Date+days.swift */,
 				A3F7587E24AE3C2600B4ABD8 /* Assets.xcassets */,
@@ -242,6 +245,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A3F7587D24AE3C2400B4ABD8 /* ContentView.swift in Sources */,
+				A3EB9BCA24AEE20A000913A7 /* DayView.swift in Sources */,
 				A3EB9BC624AED4CD000913A7 /* Date+days.swift in Sources */,
 				A3F7587B24AE3C2400B4ABD8 /* DrinkTrackerSampleApp.swift in Sources */,
 				A3EB9BC824AEDAFB000913A7 /* DayFormat.swift in Sources */,

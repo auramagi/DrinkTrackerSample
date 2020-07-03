@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct DrinkTrackerSampleApp: App {
+    @State var state: AppState = .init(model: .previewData)
+    
     var body: some Scene {
         WindowGroup {
-            ContentView(model: .previewData)
+            ContentView()
+                .environmentObject(state)
         }
     }
 }
