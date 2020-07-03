@@ -36,6 +36,10 @@ struct EntryLog: Codable {
         return entries
             .filter { range.contains($0.date) }
     }
+    
+    func amount(day: Date) -> Int {
+        entries(day: day).reduce(into: 0) { $0 += $1.amount }
+    }
 }
 
 class AppState: ObservableObject {
@@ -114,6 +118,10 @@ class AppModel: ObservableObject {
     
     func addEntry(_ entry: Entry) {
         entryLog.entries.append(entry)
+    }
+    
+    func deleteEntries(ids: [UUID]) {
+        entryLog.entries.removeAll { ids.contains($0.id) }
     }
     
 }

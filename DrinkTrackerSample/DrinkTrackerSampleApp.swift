@@ -14,8 +14,12 @@ struct DrinkTrackerSampleApp: App {
     var body: some Scene {
         WindowGroup {
             windowContent
-                .alert(item: $state.errorAlert, content: makeErrorAlert)
                 .onOpenURL(perform: handleURL)
+                .errorAlert(content: $state.errorAlert) { [state] in
+                    if state.model == nil {
+                        fatalError("Critical app error")
+                    }
+                }
         }
     }
     
@@ -28,18 +32,6 @@ struct DrinkTrackerSampleApp: App {
         }
     }
     
-    private func makeErrorAlert(content: ErrorAlertContent) -> Alert {
-        Alert(
-            title: Text(content.title),
-            message: Text(content.message),
-            dismissButton: .default(Text("OK"), action: { [state] in
-                if state.model == nil {
-                    fatalError("Critical app error")
-                }
-            })
-        )
-    }
-    
     private func handleURL(_ url: URL) {
         guard url.scheme == "widget",
               url.host == "stats",
@@ -50,4 +42,16 @@ struct DrinkTrackerSampleApp: App {
         state.model?.selected = day
     }
     
+}
+
+extension View {
+    func errorAlert(content: Binding<ErrorAlertContent?>, dismissAction: (() -> Void)? = nil) -> some View {
+        alert(item: content) { content in
+            Alert(
+                title: Text(content.title),
+                message: Text(content.message),
+                dismissButton: .default(Text("OK"), action: dismissAction)
+            )
+        }
+    }
 }

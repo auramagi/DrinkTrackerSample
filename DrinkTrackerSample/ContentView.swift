@@ -75,7 +75,7 @@ struct DayGridItem: View {
                 .fill(Color("GridItemBackground"))
             
             VStack {
-                Text(Strings.glassCount(model.entries(day: day).count))
+                Text(Strings.glassCount(model.amount(day: day)))
                         .font(.headline)
                 
                 Text(DayFormat.dateFormatter.string(from: day))

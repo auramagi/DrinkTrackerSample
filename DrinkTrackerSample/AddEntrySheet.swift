@@ -14,6 +14,8 @@ struct AddEntrySheet: View {
     @EnvironmentObject var model: AppModel
     @Environment(\.presentationMode) var presentation
     
+    @State var alertContent: ErrorAlertContent?
+    @State var presAl: Bool = false
     @ViewBuilder
     var body: some View {
         VStack {
@@ -29,6 +31,11 @@ struct AddEntrySheet: View {
             
             Spacer()
             
+            if !canAdd {
+                Text("\(Image(systemName: "xmark.octagon.fill")) Can not add in the future")
+                    .foregroundColor(.red)
+            }
+            
             Button(
                 action: { addEntry(); presentation.wrappedValue.dismiss() },
                 label: { Text("Add")
@@ -38,14 +45,19 @@ struct AddEntrySheet: View {
                     .padding(.vertical)
                     .background(RoundedRectangle(cornerRadius: 12).fill(Color.accentColor))
                 }
-            )
+            ).disabled(!canAdd)
             
             Spacer()
         }
     }
     
     private func addEntry() {
+        guard canAdd else { return }
         let entry = Entry(id: .init(), date: date, amount: amount)
         model.addEntry(entry)
+    }
+    
+    private var canAdd: Bool {
+        date < Date().dayRange().upperBound
     }
 }
