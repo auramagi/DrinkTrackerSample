@@ -81,6 +81,9 @@ struct ContentView: View {
                 }
                 
             }
+            .onReceive(state.$widgetSelected) { date in
+                isShowingWidgetSelectedDate = date != nil
+            }
             .background(Color("GridBackground"))
             .navigationTitle("Drink tracker")
             

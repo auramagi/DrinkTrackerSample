@@ -100,6 +100,7 @@ struct WidgetsEntryView: View {
             }
         }
         .background(Color.accentColor.opacity(0.10).blendMode(.hardLight))
+        .widgetURL(URL(string: "widget://stats/0")!)
     }
     
 }
