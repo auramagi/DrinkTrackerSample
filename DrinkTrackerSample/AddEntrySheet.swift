@@ -14,8 +14,10 @@ struct AddEntrySheet: View {
     @EnvironmentObject var model: AppModel
     @Environment(\.presentationMode) var presentation
     
-    @State var alertContent: ErrorAlertContent?
-    @State var presAl: Bool = false
+    init(date: Date) {
+        self._date = .init(wrappedValue: date.sameDateWithCurrentTime())
+    }
+    
     @ViewBuilder
     var body: some View {
         VStack {

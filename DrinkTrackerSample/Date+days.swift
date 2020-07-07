@@ -29,4 +29,9 @@ extension Date {
         let nextDayStart = calendar.date(byAdding: .day, value: 1, to: dayStart)!
         return (dayStart..<nextDayStart)
     }
+    
+    func sameDateWithCurrentTime() -> Date! {
+        let comps = Calendar.current.dateComponents([.hour, .minute, .second], from: Date())
+        return Calendar.current.date(bySettingHour: comps.hour!, minute: comps.minute!, second: comps.second!, of: self)
+    }
 }
