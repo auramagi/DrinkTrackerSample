@@ -105,6 +105,7 @@ class AppModel: ObservableObject {
                 } catch {
                     self?.receiveSyncUpdate(.error(error))
                 }
+                WidgetCenter.shared.reloadAllTimelines()
             }
             .store(in: &cancellables)
     }
@@ -117,12 +118,10 @@ class AppModel: ObservableObject {
     
     func addEntry(_ entry: Entry) {
         entryLog.entries.append(entry)
-        WidgetCenter.shared.reloadAllTimelines()
     }
     
     func deleteEntries(ids: [UUID]) {
         entryLog.entries.removeAll { ids.contains($0.id) }
-        WidgetCenter.shared.reloadAllTimelines()
     }
     
 }
